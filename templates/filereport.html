@@ -1,0 +1,113 @@
+{% block content %}
+{% load static %}
+{% include 'Rheader.html' %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4>Create Complaint</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Show messages if any -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Update form action and add enctype -->
+                    <form action="{% url 'submit_complaint' %}" method="POST" enctype="multipart/form-data" id="complaintForm">
+                        {% csrf_token %}
+                        
+                        <!-- Title Field -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   placeholder="Enter Complaint title" required>
+                        </div>
+
+                        <!-- Genre/Category Dropdown -->
+                        <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <select class="form-select" id="genre" name="genre" required>
+                                <option value="">Select Complaint Category</option>
+                                <option value="1">Cleaning</option>
+                                <option value="2">Water Supply</option>
+                                <option value="3">Electricity</option>
+                                <option value="4">Garbage Collection</option>
+                                <option value="5">Others</option>
+                            </select>
+                        </div>
+
+                        <!-- Description Field -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" 
+                                      rows="4" placeholder="Enter Complaint Description" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" 
+                                   placeholder="Enter Your Phone Number" required>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" 
+                                      rows="3" placeholder="Enter Your Address" required></textarea>
+                        </div>
+                        
+
+                        <!-- Upload Image -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload Image</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="image" name="image" 
+                                       accept="image/*" required>
+                                <label class="input-group-text" for="image">
+                                    <i class="fas fa-upload"></i>
+                                </label>
+                            </div>
+                            <!-- Preview Image Container -->
+                            <div id="imagePreview" class="mt-2 text-center" style="display: none;">
+                                <img id="preview" src="#" alt="Preview" style="max-width: 200px; max-height: 200px;"/>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Location Fields -->
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+
+                        <!-- Get Location Button -->
+                        <div class="d-grid gap-2 mb-2">
+                            <button class="btn btn-primary" type="button" id="getLocationBtn">
+                                <i class="fas fa-map-marker-alt me-2"></i>GET LOCATION
+                            </button>
+                        </div>
+
+                        <!-- Location Message -->
+                        <p class="text-danger text-center small mb-3" id="locationMessage">
+                            Press "Get Location" Button To save the Current Location for Your Complaint
+                        </p>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Submit Complaint</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this JavaScript at the bottom of your file -->
+
+{% include 'Rfooter.html' %}
+{% endblock %}
